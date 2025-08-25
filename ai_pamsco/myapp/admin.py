@@ -19,7 +19,7 @@ class CustomUserAdmin(UserAdmin):
 
     # Fields displayed when editing a user
     fieldsets = (
-        (None, {"fields": ("username", "email", "password")}),
+        ("Bio", {"fields": ("username", "email", "password")}),
         ("Personal Info", {"fields": ("role", "location")}),
         ("Permissions", {"fields": ("is_staff", "is_active", "is_superuser", "groups", "user_permissions")}),
     )
@@ -28,7 +28,7 @@ class CustomUserAdmin(UserAdmin):
     add_fieldsets = (
         (None, {
             "classes": ("wide",),
-            "fields": ("username", "email", "role", "location", "password1", "password2", "is_staff", "is_active"),
+            "fields": ("username", "email", "role", "location", "password1", "password2", "is_staff", "is_active", "is_superuser"),
         }),
     )
 
@@ -72,4 +72,5 @@ admin.site.register(Product, ProductAdmin)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(MarketPrice, MarketPriceAdmin)
 
-#admin(fintechsam_254)
+#admin email: samuelnmu@gmail.com
+#admin pwd: fintechsam_254
