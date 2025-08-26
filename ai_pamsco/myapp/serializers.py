@@ -59,14 +59,25 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ["id", "buyer", "product", "product_name", "quantity", "total_price",
-                  "payment_status", "order_status", "created_at"]
+        fields = [
+            "id", "buyer", "product", "product_name", "quantity", "total_price",
+            "payment_status", "order_status", "created_at"
+        ]
+        read_only_fields = ["total_price", "buyer", "product_name"]
 
-    def validate_quantity(self, value):
-        """Ensure order quantity is greater than zero."""
-        if value <= 0:
-            raise serializers.ValidationError("Order quantity must be at least 1.")
-        return value
+    def create(self, validated_data):
+        request = self.context["request"]
+        buyer = request.user
+        product = validated_data["product"]
+        quantity = validated_data["quantity"]
+
+        total_price = product.price * quantity
+
+        return Order.objects.create(
+            buyer=buyer,
+            total_price=total_price,
+            **validated_data
+        )
 
 
 # Market Price Serializer

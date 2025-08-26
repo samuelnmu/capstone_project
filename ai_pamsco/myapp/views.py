@@ -56,21 +56,16 @@ class OrderViewSet(viewsets.ModelViewSet):
     - Buyers can place new orders.
     - Orders are tied to the logged-in buyer.
     """
-
     queryset = Order.objects.all().order_by("-created_at")
     serializer_class = OrderSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
         """
-        When creating an order:
-        - Attach logged-in buyer
-        - Compute total price from product * quantity
+        Creation logic is handled in OrderSerializer.create()
+        Just call save() with no extra args.
         """
-        product = serializer.validated_data["product"]
-        quantity = serializer.validated_data["quantity"]
-        total_price = product.price * quantity
-        serializer.save(buyer=self.request.user, total_price=total_price)
+        serializer.save()
 
     def get_queryset(self):
         """
@@ -81,7 +76,6 @@ class OrderViewSet(viewsets.ModelViewSet):
         if user.role == "admin":
             return Order.objects.all()
         return Order.objects.filter(buyer=user)
-
 
 # Market Price ViewSet
 class MarketPriceViewSet(viewsets.ModelViewSet):
