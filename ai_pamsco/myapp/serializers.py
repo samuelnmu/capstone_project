@@ -9,10 +9,11 @@ class CustomUserSerializer(serializers.ModelSerializer):
     Serializes CustomUser model.
     Handles validation and sanitization of user data.
     """
+    password = serializers.CharField(write_only=True)
 
     class Meta:
         model = CustomUser
-        fields = ["id", "username", "email", "role", "location"]
+        fields = ["id", "username", "email", "role", "password","location"]
 
     def validate_email(self, value):
         """Ensure email is lowercase and unique."""

@@ -6,6 +6,7 @@ from .serializers import (
     OrderSerializer,
     MarketPriceSerializer,
 )
+from django.shortcuts import render
 
 # Handles CRUD operations for Users, Products, Orders, and Market Prices
 
@@ -88,3 +89,12 @@ class MarketPriceViewSet(viewsets.ModelViewSet):
     queryset = MarketPrice.objects.all().order_by("-date_recorded")
     serializer_class = MarketPriceSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+
+# HTML
+
+def register_page(request):
+    return render(request, "myapp/register.html")
+
+def login_page(request):
+    return render(request, "myapp/login.html")
