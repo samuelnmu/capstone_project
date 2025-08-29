@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import CustomUser, Product, Order, MarketPrice
 from .sanitizers import sanitize_text
-
+from django.contrib.auth.hashers import make_password
 
 # Custom User Serializer
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -13,7 +13,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ["id", "username", "email", "role", "password","location"]
+        fields = ["id", "username", "email", "role", "password", "location"]
 
     def validate_email(self, value):
         """Ensure email is lowercase and unique."""
@@ -25,6 +25,18 @@ class CustomUserSerializer(serializers.ModelSerializer):
     def validate_location(self, value):
         """Sanitize and validate location field."""
         return sanitize_text(value)
+
+    def create(self, validated_data):
+        # ✅ Hash password before saving
+        validated_data["password"] = make_password(validated_data["password"])
+        return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        # ✅ Hash password if being updated
+        password = validated_data.get("password", None)
+        if password:
+            validated_data["password"] = make_password(password)
+        return super().update(instance, validated_data)
 
 
 # Product Serializer
