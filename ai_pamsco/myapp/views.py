@@ -7,6 +7,14 @@ from .serializers import (
     MarketPriceSerializer,
 )
 from django.shortcuts import render
+from django.contrib.auth import logout
+from django.http import JsonResponse
+
+from django.contrib.auth.decorators import login_required
+
+from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import render, redirect
+from django.contrib import messages
 
 # Handles CRUD operations for Users, Products, Orders, and Market Prices
 
@@ -97,4 +105,26 @@ def register_page(request):
     return render(request, "myapp/register.html")
 
 def login_page(request):
+    return render(request, "myapp/login.html")
+
+def logout_view(request):
+    logout(request)
+    return JsonResponse({"message:":"Logged out successfully"},status=200)
+
+@login_required
+def home_page(request):
+    "Homepage after login"
+    return render(request, "myapp/homepage.html", {"user":request.user})
+
+def login_page(request):
+    if request.method == "POST":
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+
+        user = authenticate(request, email=email, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect("home")   # go to homepage
+        else:
+            messages.error(request, "Invalid email or password")
     return render(request, "myapp/login.html")

@@ -1,7 +1,7 @@
 # urls.py
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import CustomUserViewSet, ProductViewSet, OrderViewSet, MarketPriceViewSet, register_page, login_page
+from .views import CustomUserViewSet, ProductViewSet, OrderViewSet, MarketPriceViewSet, register_page, login_page, logout_view, home_page, login_page
 
 # Create a router and register our viewsets
 router = DefaultRouter()
@@ -16,8 +16,11 @@ urlpatterns = [
     # HTML page
     path("register/", register_page, name="register"),
     path("login/", login_page, name="login"),
+    path("logout/", logout_view, name="logout"),
+    path("home/", home_page, name="home"),
+    path("login/", login_page, name="login"),
 
 
-    # API endpoints
+    # API endpoints for the router viewsets
     path("api/", include(router.urls)),
 ]
