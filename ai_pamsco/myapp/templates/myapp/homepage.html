@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Homepage</title>
+</head>
+
+<body>
+    <h1>Welcome, {{ user.username }}!</h1>
+    <p>You are logged in as <strong>{{ user.email }}</strong></p>
+
+    <button id="logoutBtn">Logout</button>
+
+    <script>
+        // Get CSRF Token helper
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== "") {
+                const cookies = document.cookie.split(";");
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + "=")) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const logoutBtn = document.getElementById("logoutBtn");
+            logoutBtn.addEventListener("click", async () => {
+                try {
+                    const response = await fetch("/myapp/logout/", {
+                        method: "POST",
+                        headers: {
+                            "X-CSRFToken": getCookie("csrftoken")
+                        }
+                    });
+
+                    if (response.ok) {
+                        alert("Logged out successfully!");
+                        window.location.href = "/myapp/login/";
+                    } else {
+                        alert("Logout failed!");
+                    }
+                } catch (err) {
+                    console.error("Error logging out:", err);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
