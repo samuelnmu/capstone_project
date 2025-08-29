@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Buyer Dashboard</title>
+</head>
+
+<body>
+    <h1>Welcome Buyer, {{ user.username }}!</h1>
+    <p>You are logged in as <strong>{{ user.email }}</strong></p>
+
+    <ul>
+        <li><a href="#">Browse Products</a></li>
+        <li><a href="#">My Orders</a></li>
+        <li><a href="#">Market Prices</a></li>
+    </ul>
+
+    <button onclick="window.location.href='/myapp/logout/'">Logout</button>
+</body>
+
+</html>

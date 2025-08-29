@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Transporter Dashboard</title>
+</head>
+
+<body>
+    <h1>Welcome Transporter, {{ user.username }}!</h1>
+    <p>You are logged in as <strong>{{ user.email }}</strong></p>
+
+    <ul>
+        <li><a href="#">Available Deliveries</a></li>
+        <li><a href="#">My Deliveries</a></li>
+    </ul>
+
+    <button onclick="window.location.href='/myapp/logout/'">Logout</button>
+</body>
+
+</html>
